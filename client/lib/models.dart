@@ -1,5 +1,4 @@
 import 'package:app_platform/app_platform.dart';
-import 'package:flutter/material.dart';
 
 final app = AnApp<AppState>();
 

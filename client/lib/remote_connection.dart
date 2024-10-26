@@ -5,7 +5,7 @@ import 'package:client/models.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-var _uuid = Uuid();
+var _uuid = const Uuid();
 
 class InvalidRequestError extends ArgumentError {
   InvalidRequestError(super.message);

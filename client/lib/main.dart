@@ -1,4 +1,5 @@
 import 'package:app_platform/app_platform.dart';
+import 'package:client/my_interactive_viewer.dart';
 import 'package:client/remote_connection.dart';
 import 'package:client/state.dart';
 import 'package:flutter/material.dart';
@@ -125,9 +126,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                               const Text(
                                                 "output: ",
                                               ),
-                                              SingleChildScrollView(
-                                                scrollDirection:
-                                                    Axis.horizontal,
+                                              MyInteractiveViewer(
+                                                boundaryMargin:
+                                                    const EdgeInsets.all(
+                                                  double.infinity,
+                                                ),
+                                                minScale: 0.1,
+                                                constrained: (
+                                                  vertical: true,
+                                                  horizontal: false,
+                                                ),
                                                 child: HighlightView(
                                                   "${output.output}\n",
                                                   language: "bash",
