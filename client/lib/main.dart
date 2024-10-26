@@ -88,8 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ModelType(
                                         "Command args",
                                         [
-                                          for (var (idx, arg)
-                                              in command.regexes.list.indexed)
+                                          for (var arg in command.regexes.list)
                                             FieldType(
                                               arg.name.value,
                                               stringType,
@@ -117,28 +116,50 @@ class _MyHomePageState extends State<MyHomePage> {
                                         await showAlertDialog(
                                           context,
                                           "Command completed!",
-                                          content: ListView(
-                                            shrinkWrap: true,
-                                            // mainAxisSize: MainAxisSize.min,
-                                            // crossAxisAlignment:
-                                            //     CrossAxisAlignment.start,
+                                          contentPadding: EdgeInsets.all(4),
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               const Text(
                                                 "output: ",
                                               ),
-                                              MyInteractiveViewer(
-                                                boundaryMargin:
-                                                    const EdgeInsets.all(
-                                                  double.infinity,
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  border: Border.all(
+                                                      color: Colors.grey),
                                                 ),
-                                                minScale: 0.1,
-                                                constrained: (
-                                                  vertical: true,
-                                                  horizontal: false,
-                                                ),
-                                                child: HighlightView(
-                                                  "${output.output}\n",
-                                                  language: "bash",
+                                                child: ConstrainedBox(
+                                                  constraints:
+                                                      const BoxConstraints(
+                                                    maxHeight: 300,
+                                                    minHeight: 150,
+                                                  ),
+                                                  child: MyInteractiveViewer(
+                                                    boundaryMargin:
+                                                        const EdgeInsets.all(
+                                                      double.infinity,
+                                                    ),
+                                                    minScale: 0.1,
+                                                    constrained: (
+                                                      vertical: false,
+                                                      horizontal: false,
+                                                    ),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                          color: Colors.black,
+                                                        ),
+                                                        color: Colors.white,
+                                                      ),
+                                                      child: HighlightView(
+                                                        "${output.output}\n",
+                                                        language: "bash",
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                               Text(
