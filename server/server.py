@@ -73,6 +73,8 @@ class Connection:
             
         except json.JSONDecodeError as e:
             logger.error(f"Got invalid json from {addr}: {message}, {e}, ignoring...")
+        except websockets.exceptions.ConnectionClosedError:
+            logger.error(f"Connection from {addr} was terminated abruptly!")
 
     async def _handle_message(self, request_id: str, response_type: str, message_type: str, message: Dict[str, Any]):
         if response_type == "content":
