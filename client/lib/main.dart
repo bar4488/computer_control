@@ -129,7 +129,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 decoration: BoxDecoration(
                                                   color: Colors.white,
                                                   border: Border.all(
-                                                      color: Colors.grey),
+                                                    color: Colors.grey,
+                                                  ),
                                                 ),
                                                 child: ConstrainedBox(
                                                   constraints:
