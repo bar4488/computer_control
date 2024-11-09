@@ -177,7 +177,7 @@ class RemoteDatabase {
     var response = await _connection.sendRequest(Request("get_commands", {}));
     if (response.error == null) {
       var commandsList = response.content as List<dynamic>;
-      return commandsList.map((e) => CommandModel.modelType.create(e)).toList();
+      return commandsList.map((e) => CommandModel.Type.create(e)).toList();
     } else {
       throw InvalidRequestError(response.error!);
     }

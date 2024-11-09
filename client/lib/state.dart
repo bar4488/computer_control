@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:client/models.dart';
 import 'package:path_provider/path_provider.dart';
 
-const String currentStateVersion = "1.1";
+const String currentStateVersion = "1.2";
 
 Map<String?, Migration> migrations = {
   "1.0": Migration(
@@ -18,6 +18,18 @@ Map<String?, Migration> migrations = {
           newRx.add({"name": "arg$idx", "regex": rx});
         }
         cmd["regexes"] = newRx;
+      }
+      return oldState;
+    },
+  ),
+  "1.1": Migration(
+    description: "make address list",
+    startVersion: "1.1",
+    endVersion: "1.2",
+    doMigration: (oldState) {
+      var addr = oldState.remove("address");
+      if (addr != null) {
+        oldState["addresses"] = [addr];
       }
       return oldState;
     },
@@ -53,7 +65,10 @@ Future initAppState() async {
           "name": "something",
           "template": "something {0}",
           "regexes": [
-            "\\d\\d\\d",
+            {
+              "name": "abc",
+              "regex": "\\d\\d\\d",
+            },
           ],
         }
       ]

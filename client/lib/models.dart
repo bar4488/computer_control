@@ -6,71 +6,71 @@ class RegexModel extends Model {
   Primitive<String> name;
   Primitive<String> regex;
 
-  static final List<FieldType> fields = [
-    FieldType<Primitive<String>>("name", stringType),
-    FieldType<Primitive<String>>("regex", stringType),
+  static final List<StateFieldType> Fields = [
+    StateFieldType<StatePrimitive<String>>("name", stringType),
+    StateFieldType<StatePrimitive<String>>("regex", stringType),
   ];
 
-  static final ModelType<RegexModel> modelType = ModelType<RegexModel>(
+  static final StateModelType<RegexModel> Type = StateModelType<RegexModel>(
     "RegexModel",
-    RegexModel.fields,
+    RegexModel.Fields,
     constructor: RegexModel.fromFields,
   );
 
   RegexModel.fromFields(super.fields, super.type)
-      : name = fields[0].value as Primitive<String>,
-        regex = fields[1].value as Primitive<String>;
+      : name = fields[0] as Primitive<String>,
+        regex = fields[1] as Primitive<String>;
 }
 
 class CommandModel extends Model {
   Primitive<String> name;
   Primitive<String> template;
-  ListObject<RegexModel> regexes;
+  StateList<RegexModel> regexes;
 
-  static final List<FieldType> fields = [
-    FieldType<Primitive<String>>("name", stringType),
-    FieldType<Primitive<String>>("template", stringType),
-    FieldType<ListObject<RegexModel>>(
-        "regexes", ListType<RegexModel>(RegexModel.modelType)),
+  static final List<StateFieldType> Fields = [
+    StateFieldType<StatePrimitive<String>>("name", stringType),
+    StateFieldType<StatePrimitive<String>>("template", stringType),
+    StateFieldType<StateList<RegexModel>>(
+        "regexes", StateListType<RegexModel>(RegexModel.Type)),
   ];
 
-  static final ModelType<CommandModel> modelType = ModelType<CommandModel>(
+  static final StateModelType<CommandModel> Type = StateModelType<CommandModel>(
     "CommandModel",
-    CommandModel.fields,
+    CommandModel.Fields,
     constructor: CommandModel.fromFields,
   );
 
   CommandModel.fromFields(super.fields, super.type)
-      : name = fields[0].value as Primitive<String>,
-        template = fields[1].value as Primitive<String>,
-        regexes = fields[2].value as ListObject<RegexModel>;
+      : name = fields[0] as Primitive<String>,
+        template = fields[1] as Primitive<String>,
+        regexes = fields[2] as StateList<RegexModel>;
 }
 
 class AppState extends Model {
-  ListObject<CommandModel> commands;
-  Primitive<String?> address;
+  StateList<CommandModel> commands;
+  StateList<Primitive<String>> addresses;
 
   // boilerplate
-  static final List<FieldType> fields = [
-    FieldType<ListObject<CommandModel>>(
+  static final List<StateFieldType> Fields = [
+    StateFieldType<StateList<CommandModel>>(
       "commands",
-      ListType<CommandModel>(CommandModel.modelType),
+      StateListType<CommandModel>(CommandModel.Type),
       defaultValue: () => [],
     ),
-    FieldType<Primitive<String?>>(
-      "address",
-      optionalStringType,
-      defaultValue: () => "192.168.2.229:8765",
+    StateFieldType<StateList<Primitive<String>>>(
+      "addresses",
+      StateListType<StatePrimitive<String>>(stringType),
+      defaultValue: () => ["192.168.2.229:8765"],
     ),
   ];
 
-  static final ModelType<AppState> modelType = ModelType<AppState>(
+  static final StateModelType<AppState> modelType = StateModelType<AppState>(
     "State",
-    AppState.fields,
+    AppState.Fields,
     constructor: AppState.fromFields,
   );
 
   AppState.fromFields(super.fields, super.type)
-      : commands = fields[0].value as ListObject<CommandModel>,
-        address = fields[1].value as Primitive<String?>;
+      : commands = fields[0] as StateList<CommandModel>,
+        addresses = fields[1] as StateList<Primitive<String>>;
 }

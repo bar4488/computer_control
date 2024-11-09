@@ -85,11 +85,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                 : () async {
                                     var args = await showCreateModelDialog(
                                       context,
-                                      ModelType(
+                                      StateModelType(
                                         "Command args",
                                         [
                                           for (var arg in command.regexes.list)
-                                            FieldType(
+                                            StateFieldType(
                                               arg.name.value,
                                               stringType,
                                               validators: [
@@ -104,10 +104,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     if (args != null && context.mounted) {
                                       var output = await db.run_command(
                                         command.name.value,
-                                        args.value
+                                        args.fields
                                             .map(
                                               (e) =>
-                                                  (e.value as Primitive<String>)
+                                                  (e as StatePrimitive<String>)
                                                       .value,
                                             )
                                             .toList(),
@@ -197,7 +197,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             context,
                             "Connect to server",
                             "enter an ip address",
-                            defaultValue: state.address.value,
+                            choices: state.addresses.list
+                                .map(
+                                  (e) => e.value,
+                                )
+                                .toList(),
                           );
                           if (address == null || !context.mounted) return;
 
@@ -214,7 +218,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                 subtitle: "port: $port");
 
                             await db.connect("ws://$ip:$port");
-                            state.address.set("$ip:$port");
+                            var addr = "$ip:$port";
+                            if (!state.addresses.list
+                                .map((e) => e.value)
+                                .contains(addr)) {
+                              state.addresses.add(stringType.create(addr));
+                            }
                             var commands = await db.get_commands();
                             state.commands.set(commands);
                           } else {
@@ -228,8 +237,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         child: Text(
                           connectionUrl == null
-                              ? "Disconnected! (${state.address.value})"
-                              : "Connected! (${state.address.value})",
+                              ? "Disconnected!"
+                              : "Connected! ($connectionUrl)",
                         ),
                       ),
                     ),
